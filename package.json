@@ -1,0 +1,14 @@
+{
+  "name": "triporio",
+  "version": "1.0.0",
+  "description": "Triporio root project",
+  "scripts": {
+    "install-all": "cd server && npm install && cd ../client && npm install",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

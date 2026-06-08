@@ -1,0 +1,28 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <title>Error</title>
+            <script type="module">
+              const error = {"message":"Unterminated string: \"tailwindcss\\; \"","stack":"    at gr (file:///C:/Users/Sidharth/Desktop/Triporio/client/node_modules/tailwindcss/dist/chunk-3IR7ZFJX.mjs:1:4781)\n    at Te (file:///C:/Users/Sidharth/Desktop/Triporio/client/node_modules/tailwindcss/dist/chunk-3IR7ZFJX.mjs:1:1496)\n    at Rf (file:///C:/Users/Sidharth/Desktop/Triporio/client/node_modules/tailwindcss/dist/chunk-3IR7ZFJX.mjs:38:1384)\n    at hu (file:///C:/Users/Sidharth/Desktop/Triporio/client/node_modules/@tailwindcss/node/dist/index.mjs:10:3463)\n    at B.generate (file:///C:/Users/Sidharth/Desktop/Triporio/client/node_modules/@tailwindcss/vite/dist/index.mjs:1:5510)\n    at TransformPluginContext.handler (file:///C:/Users/Sidharth/Desktop/Triporio/client/node_modules/@tailwindcss/vite/dist/index.mjs:1:2994)\n    at EnvironmentPluginContainer.transform (file:///C:/Users/Sidharth/Desktop/Triporio/client/node_modules/vite/dist/node/chunks/node.js:30179:51)\n    at loadAndTransform (file:///C:/Users/Sidharth/Desktop/Triporio/client/node_modules/vite/dist/node/chunks/node.js:24509:48)\n    at async viteTransformMiddleware (file:///C:/Users/Sidharth/Desktop/Triporio/client/node_modules/vite/dist/node/chunks/node.js:24303:20)","id":"C:/Users/Sidharth/Desktop/Triporio/client/src/tailwind.css","frame":"","plugin":"@tailwindcss/vite:generate:serve","pluginCode":"@import \\\" \"tailwindcss\\; \r\n"}
+              try {
+                const { ErrorOverlay } = await import("/@vite/client")
+                document.body.appendChild(new ErrorOverlay(error))
+              } catch {
+                const h = (tag, text) => {
+                  const el = document.createElement(tag)
+                  el.textContent = text
+                  return el
+                }
+                document.body.appendChild(h('h1', 'Internal Server Error'))
+                document.body.appendChild(h('h2', error.message))
+                document.body.appendChild(h('pre', error.stack))
+                document.body.appendChild(h('p', '(Error overlay failed to load)'))
+              }
+            </script>
+          </head>
+          <body>
+          </body>
+        </html>
+      
