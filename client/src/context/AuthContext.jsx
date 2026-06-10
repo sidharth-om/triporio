@@ -5,12 +5,23 @@ import toast from 'react-hot-toast';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('user');
-    return saved ? JSON.parse(saved) : null;
-  });
-  const [token, setToken] = useState(() => localStorage.getItem('token'));
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    const savedToken = localStorage.getItem('token');
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        console.error('Failed to parse user from localStorage', e);
+      }
+    }
+    if (savedToken) setToken(savedToken);
+    setLoading(false);
+  }, []);
 
   const login = async (credentials) => {
     setLoading(true);
@@ -39,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       setToken(data.token);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      toast.success(`Welcome to Explore North Kerala, ${data.user.name}! 🌴`);
+      toast.success(`Welcome to Triporio, ${data.user.name}! 🌴`);
       return { success: true, user: data.user };
     } catch (error) {
       const msg = error.response?.data?.message || 'Registration failed';

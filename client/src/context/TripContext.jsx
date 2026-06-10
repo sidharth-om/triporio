@@ -4,47 +4,52 @@ import toast from 'react-hot-toast';
 const TripContext = createContext(null);
 
 export const TripProvider = ({ children }) => {
-  const [tripPlan, setTripPlan] = useState(() => {
+  const [tripPlan, setTripPlan] = useState({
+    numberOfPeople: 1,
+    numberOfDays: 3,
+    arrivalMode: 'Train',
+    needPickup: false,
+    arrivalLocation: '',
+    travelDates: { from: '', to: '' },
+  });
+  
+  const [cart, setCart] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Persist state changes
+  useEffect(() => {
     try {
-      const saved = localStorage.getItem('tripPlan');
-      if (saved && saved !== 'undefined') {
-        const parsed = JSON.parse(saved);
-        if (parsed && typeof parsed === 'object') return parsed;
+      const savedPlan = localStorage.getItem('tripPlan');
+      if (savedPlan && savedPlan !== 'undefined') {
+        const parsed = JSON.parse(savedPlan);
+        if (parsed && typeof parsed === 'object') setTripPlan(parsed);
       }
     } catch (e) {
       console.error('Failed to parse tripPlan from localStorage', e);
     }
-    return {
-      numberOfPeople: 1,
-      numberOfDays: 3,
-      arrivalMode: 'Train',
-      needPickup: false,
-      arrivalLocation: '',
-      travelDates: { from: '', to: '' },
-    };
-  });
-  
-  const [cart, setCart] = useState(() => {
     try {
-      const saved = localStorage.getItem('tripCart');
-      if (saved && saved !== 'undefined') {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed;
+      const savedCart = localStorage.getItem('tripCart');
+      if (savedCart && savedCart !== 'undefined') {
+        const parsed = JSON.parse(savedCart);
+        if (Array.isArray(parsed)) setCart(parsed);
       }
     } catch (e) {
       console.error('Failed to parse tripCart from localStorage', e);
     }
-    return [];
-  });
-
-  // Persist state changes
-  useEffect(() => {
-    localStorage.setItem('tripPlan', JSON.stringify(tripPlan));
-  }, [tripPlan]);
+    setIsLoaded(true);
+  }, []);
 
   useEffect(() => {
-    localStorage.setItem('tripCart', JSON.stringify(cart));
-  }, [cart]);
+    if (isLoaded) {
+      localStorage.setItem('tripPlan', JSON.stringify(tripPlan));
+    }
+  }, [tripPlan, isLoaded]);
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('tripCart', JSON.stringify(cart));
+    }
+  }, [cart, isLoaded]);
 
   const updateTripPlan = (data) => setTripPlan((prev) => ({ ...prev, ...data }));
 
@@ -69,7 +74,7 @@ export const TripProvider = ({ children }) => {
   const generateWhatsAppMessage = (userName, phone) => {
     const destinations = cart.map((d) => `• ${d.name} (${d.location})`).join('\n');
     const msg = `
-🌴 *EXPLORE NORTH KERALA - TRIP REQUEST*
+🌴 *TRIPORIO - KERALA TRIP REQUEST*
 
 👤 *Name:* ${userName}
 📱 *Phone:* ${phone}

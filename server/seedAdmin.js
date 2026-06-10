@@ -9,7 +9,7 @@ const seedAdmin = async () => {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('MongoDB Connected');
 
-    const adminExists = await User.findOne({ email: 'admin@explorenorthkerala.com' });
+    const adminExists = await User.findOne({ email: 'admin@triporio.com' });
     if (adminExists) {
       console.log('Admin already exists');
       process.exit(0);
@@ -17,14 +17,14 @@ const seedAdmin = async () => {
 
     await User.create({
       name: 'Admin',
-      email: 'admin@explorenorthkerala.com',
+      email: 'admin@triporio.com',
       phone: '9876543210',
       password: 'admin123456',
       role: 'admin',
     });
 
     console.log('✅ Admin user created:');
-    console.log('   Email: admin@explorenorthkerala.com');
+    console.log('   Email: admin@triporio.com');
     console.log('   Password: admin123456');
     process.exit(0);
   } catch (error) {

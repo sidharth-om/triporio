@@ -9,10 +9,13 @@ export const authService = {
 
 export const destinationService = {
   getAll: (params) => api.get('/destinations', { params }),
+  getStats: () => api.get('/destinations/stats'),
   getById: (id) => api.get(`/destinations/${id}`),
   create: (data) => api.post('/destinations', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
   update: (id, data) => api.put(`/destinations/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }),
   delete: (id) => api.delete(`/destinations/${id}`),
+  getReviews: (id) => api.get(`/destinations/${id}/reviews`),
+  addReview: (id, data) => api.post(`/destinations/${id}/reviews`, data),
 };
 
 export const wishlistService = {

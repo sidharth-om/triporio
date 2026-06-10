@@ -212,10 +212,55 @@ exports.seedData = async (req, res) => {
 
     await Destination.deleteMany({});
     await SeasonalEvent.deleteMany({});
-    await Destination.insertMany(destinations);
+    const insertedDestinations = await Destination.insertMany(destinations);
     await SeasonalEvent.insertMany(events);
 
-    res.json({ success: true, message: 'Data seeded successfully', destinations: destinations.length, events: events.length });
+    // Seed real reviews to make ratings original
+    const Review = require('../models/Review');
+    const mongoose = require('mongoose');
+    await Review.deleteMany({});
+
+    const firstUser = await User.findOne();
+    const userId = firstUser ? firstUser._id : new mongoose.Types.ObjectId();
+    const userName = firstUser ? firstUser.name : 'Jane Doe';
+
+    const reviewComments = [
+      { rating: 5, comment: 'Absolutely stunning! The views were breathtaking and the trekking was amazing.' },
+      { rating: 4, comment: 'Beautiful place, very peaceful. Highly recommended for weekend getaways.' },
+      { rating: 5, comment: 'One of the best travel experiences of my life. Loved the cultural vibes!' },
+      { rating: 4, comment: 'Great spot, but gets a bit crowded during weekends. Best season to visit is winter.' }
+    ];
+
+    const reviewsToInsert = [];
+    for (let i = 0; i < insertedDestinations.length; i++) {
+      const dest = insertedDestinations[i];
+      const review1 = {
+        user: userId,
+        destination: dest._id,
+        userName: userName,
+        rating: Math.floor(Math.random() * 2) + 4, // 4 or 5
+        comment: reviewComments[(i * 2) % reviewComments.length].comment
+      };
+      const review2 = {
+        user: userId,
+        destination: dest._id,
+        userName: 'Alex Smith',
+        rating: Math.floor(Math.random() * 2) + 4, // 4 or 5
+        comment: reviewComments[(i * 2 + 1) % reviewComments.length].comment
+      };
+      reviewsToInsert.push(review1, review2);
+    }
+    await Review.insertMany(reviewsToInsert);
+
+    // Calculate and update seeded destination ratings
+    for (const dest of insertedDestinations) {
+      const destReviews = reviewsToInsert.filter(r => r.destination.toString() === dest._id.toString());
+      const total = destReviews.reduce((sum, r) => sum + r.rating, 0);
+      dest.rating = destReviews.length > 0 ? parseFloat((total / destReviews.length).toFixed(1)) : 4.5;
+      await dest.save();
+    }
+
+    res.json({ success: true, message: 'Data seeded successfully with reviews', destinations: destinations.length, events: events.length });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

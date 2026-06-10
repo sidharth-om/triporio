@@ -4,9 +4,16 @@ const SeasonalEvent = require('../models/SeasonalEvent');
 // @route GET /api/events
 exports.getEvents = async (req, res) => {
   try {
-    const { category } = req.query;
+    const { category, search } = req.query;
     let query = { isActive: true };
     if (category && category !== 'All') query.category = category;
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { location: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+      ];
+    }
     const events = await SeasonalEvent.find(query).sort({ createdAt: -1 });
     res.json({ success: true, count: events.length, events });
   } catch (error) {

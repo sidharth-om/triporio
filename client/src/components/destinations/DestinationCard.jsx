@@ -1,21 +1,11 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { FiMapPin, FiCalendar, FiHeart, FiPlusCircle, FiCheckCircle, FiStar } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import { useTrip } from '../../context/TripContext';
 import { wishlistService } from '../../services';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-
-const categoryColors = {
-  Beach: 'bg-blue-500/20 text-blue-400',
-  'Hill Station': 'bg-green-500/20 text-green-400',
-  Wildlife: 'bg-amber-500/20 text-amber-400',
-  Heritage: 'bg-purple-500/20 text-purple-400',
-  Culture: 'bg-pink-500/20 text-pink-400',
-  Nature: 'bg-teal-500/20 text-teal-400',
-  Adventure: 'bg-orange-500/20 text-orange-400',
-};
 
 export default function DestinationCard({ destination, userWishlist = [], onWishlistUpdate }) {
   const { isAuthenticated } = useAuth();
@@ -71,9 +61,9 @@ export default function DestinationCard({ destination, userWishlist = [], onWish
       viewport={{ once: true }}
       whileHover={{ y: -6 }}
       transition={{ duration: 0.3 }}
-      className="glass rounded-2xl overflow-hidden card-glow group"
+      className="glass rounded-2xl overflow-hidden card-glow group flex flex-col h-full"
     >
-      <Link to={`/destinations/${destination._id}`} className="block">
+      <Link href={`/destinations/${destination._id}`} className="flex flex-col flex-1">
         <div className="relative h-52 overflow-hidden">
           <img
             src={imageUrl}
@@ -85,7 +75,7 @@ export default function DestinationCard({ destination, userWishlist = [], onWish
 
           {/* Category Badge */}
           <div className="absolute top-3 left-3">
-            <span className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${categoryColors[destination.category] || 'bg-white/20 text-white'}`}>
+            <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#0a0f1e]/85 text-green-400 border border-green-500/30 backdrop-blur-md shadow-lg">
               {destination.category}
             </span>
           </div>
@@ -108,7 +98,7 @@ export default function DestinationCard({ destination, userWishlist = [], onWish
           </div>
         </div>
 
-        <div className="p-5">
+        <div className="p-5 flex-1 flex flex-col">
           <h3 className="text-white font-bold text-lg font-display mb-1">{destination.name}</h3>
 
           <div className="flex items-center gap-1 text-slate-400 text-sm mb-3">
@@ -118,7 +108,7 @@ export default function DestinationCard({ destination, userWishlist = [], onWish
 
           <p className="text-slate-400 text-sm line-clamp-2 mb-4">{destination.shortDescription}</p>
 
-          <div className="flex items-center gap-1.5 text-xs text-amber-400 mb-5">
+          <div className="flex items-center gap-1.5 text-xs text-amber-400 mt-auto mb-5">
             <FiCalendar className="shrink-0" />
             <span>Best: {destination.bestSeason}</span>
           </div>

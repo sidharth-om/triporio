@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 
 const destinationSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, trim: true },
+    name: { type: String, required: true, trim: true, unique: true },
     description: { type: String, required: true },
     shortDescription: { type: String, required: true },
     category: {
       type: String,
       required: true,
-      enum: ['Beach', 'Hill Station', 'Wildlife', 'Heritage', 'Culture', 'Nature', 'Adventure'],
+      enum: ['Beach', 'Hill Station', 'Wildlife', 'Heritage', 'Culture', 'Nature', 'Adventure', 'Temple'],
     },
     location: { type: String, required: true },
     bestSeason: { type: String, required: true },

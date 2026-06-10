@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { GiPalmTree } from 'react-icons/gi';
 import { FiMail, FiPhone, FiMapPin, FiInstagram, FiFacebook, FiTwitter } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
@@ -15,12 +15,12 @@ export default function Footer() {
                 <GiPalmTree className="text-white text-xl" />
               </div>
               <div>
-                <p className="font-display text-white font-bold text-lg leading-tight">Explore</p>
-                <p className="text-green-400 text-xs font-semibold tracking-widest uppercase">North Kerala</p>
+                <p className="font-display text-white font-bold text-lg leading-tight">Triporio</p>
+                <p className="text-green-400 text-xs font-semibold tracking-widest uppercase">Explore Kerala</p>
               </div>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed">
-              Discover the untouched beauty of North Kerala — where culture meets nature in perfect harmony.
+              Discover the untouched beauty of Kerala with Triporio — where culture meets nature in perfect harmony.
             </p>
             <div className="flex items-center gap-3 mt-5">
               {[FiInstagram, FiFacebook, FiTwitter].map((Icon, i) => (
@@ -38,9 +38,9 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              {[['/', 'Home'], ['/destinations', 'Destinations'], ['/events', 'Seasonal Events'], ['/about', 'About Us'], ['/contact', 'Contact']].map(([to, label]) => (
-                <li key={to}>
-                  <Link to={to} className="text-slate-400 hover:text-green-400 text-sm transition-colors">{label}</Link>
+              {[['/', 'Home'], ['/destinations', 'Destinations'], ['/events', 'Seasonal Events'], ['/about', 'About Us'], ['/contact', 'Contact']].map(([href, label]) => (
+                <li key={href}>
+                  <Link href={href} className="text-slate-400 hover:text-green-400 text-sm transition-colors">{label}</Link>
                 </li>
               ))}
             </ul>
@@ -70,7 +70,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3 text-slate-400 text-sm">
                 <FiMail className="text-green-400 shrink-0" />
-                <a href="mailto:info@explorenorthkerala.com" className="hover:text-green-400 transition-colors">info@explorenorthkerala.com</a>
+                <a href="mailto:info@triporio.com" className="hover:text-green-400 transition-colors">info@triporio.com</a>
               </li>
               <li>
                 <a
@@ -88,7 +88,7 @@ export default function Footer() {
 
         <hr className="border-white/10 my-8" />
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-          <p>© 2024 Explore North Kerala. All rights reserved.</p>
+          <p>© 2024 Triporio. All rights reserved.</p>
           <p>Made with ❤️ for Kerala Tourism</p>
         </div>
       </div>
