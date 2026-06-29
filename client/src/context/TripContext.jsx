@@ -3,15 +3,17 @@ import toast from 'react-hot-toast';
 
 const TripContext = createContext(null);
 
+const defaultTripPlan = {
+  numberOfPeople: 1,
+  numberOfDays: 3,
+  arrivalMode: 'Train',
+  needPickup: false,
+  arrivalLocation: '',
+  travelDates: { from: '', to: '' },
+};
+
 export const TripProvider = ({ children }) => {
-  const [tripPlan, setTripPlan] = useState({
-    numberOfPeople: 1,
-    numberOfDays: 3,
-    arrivalMode: 'Train',
-    needPickup: false,
-    arrivalLocation: '',
-    travelDates: { from: '', to: '' },
-  });
+  const [tripPlan, setTripPlan] = useState(defaultTripPlan);
   
   const [cart, setCart] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -69,10 +71,30 @@ export const TripProvider = ({ children }) => {
 
   const isInCart = (destId) => cart.some((d) => d._id === destId);
 
-  const clearCart = () => setCart([]);
+  const clearCart = () => {
+    setCart([]);
+    setTripPlan(defaultTripPlan);
+    localStorage.removeItem('tripPlan');
+    localStorage.removeItem('tripCart');
+  };
+
+  const formatDateDMY = (dateStr) => {
+    if (!dateStr) return 'Flexible';
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      const [year, month, day] = parts;
+      return `${parseInt(day, 10)}/${parseInt(month, 10)}/${year}`;
+    }
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+  };
 
   const generateWhatsAppMessage = (userName, phone) => {
     const destinations = cart.map((d) => `• ${d.name} (${d.location})`).join('\n');
+    const fromFormatted = formatDateDMY(tripPlan.travelDates?.from);
+    const toFormatted = formatDateDMY(tripPlan.travelDates?.to);
+    
     const msg = `
 🌴 *TRIPORIO - KERALA TRIP REQUEST*
 
@@ -87,7 +109,7 @@ export const TripProvider = ({ children }) => {
 🚗 Arrival Mode: ${tripPlan.arrivalMode}
 🚕 Pickup Needed: ${tripPlan.needPickup ? 'Yes' : 'No'}
 📍 Arrival Location: ${tripPlan.arrivalLocation || 'Not specified'}
-🗓️ Travel Dates: ${tripPlan.travelDates?.from ? new Date(tripPlan.travelDates.from).toLocaleDateString() : 'Flexible'} to ${tripPlan.travelDates?.to ? new Date(tripPlan.travelDates.to).toLocaleDateString() : 'Flexible'}
+🗓️ Travel Dates: ${fromFormatted} to ${toFormatted}
 
 ━━━━━━━━━━━━━━━━━━━
 

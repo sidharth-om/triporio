@@ -66,6 +66,8 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('tripPlan');
+    localStorage.removeItem('tripCart');
     toast.success('Logged out successfully');
   };
 
