@@ -111,11 +111,11 @@ export default function LoginPage() {
           </p>
 
           {/* Demo credentials hint */}
-          <div className="mt-6 p-4 glass rounded-xl text-xs text-slate-400">
+          {/* <div className="mt-6 p-4 glass rounded-xl text-xs text-slate-400">
             <p className="font-semibold text-slate-300 mb-1">Admin Demo:</p>
             <p>Email: admin@triporio.com</p>
             <p>Password: admin123456</p>
-          </div>
+          </div> */}
         </motion.div>
       </div>
     </div>
