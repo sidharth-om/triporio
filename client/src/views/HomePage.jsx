@@ -51,6 +51,7 @@ export default function HomePage() {
   const [featured, setFeatured] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeSlide, setActiveSlide] = useState(0);
   const [siteStats, setSiteStats] = useState({
     destinationsCount: '50+',
     happyTravelers: '10K+',
@@ -85,8 +86,8 @@ export default function HomePage() {
             daysOfBeauty: s.daysOfBeauty
           });
         }
-      } catch (error) {
-        console.error(error);
+      } catch {
+        // API unavailable — page uses default fallback values
       } finally {
         setLoading(false);
       }
@@ -105,59 +106,66 @@ export default function HomePage() {
           pagination={{ clickable: true }}
           loop
           className="h-full"
+          onSlideChange={(swiper) => setActiveSlide(swiper.realIndex)}
         >
           {heroSlides.map((slide, i) => (
             <SwiperSlide key={i} className="relative">
               <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
               <div className="absolute inset-0 hero-overlay" />
-              <div className="absolute inset-0 flex items-center justify-center px-4">
-                <div className="text-center max-w-4xl">
-                  <motion.span
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="inline-block px-4 py-1.5 glass rounded-full text-green-400 text-sm font-semibold mb-6 tracking-wide"
-                  >
-                    📍 {slide.tag}
-                  </motion.span>
-                  <motion.h1
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="font-display text-5xl md:text-7xl font-bold text-white mb-4 leading-tight"
-                  >
-                    {slide.title}
-                  </motion.h1>
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="text-xl text-slate-300 mb-10"
-                  >
-                    {slide.subtitle}
-                  </motion.p>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="flex flex-col sm:flex-row gap-4 justify-center"
-                  >
-                    <Link href="/destinations" className="btn-primary px-8 py-3.5 text-base">
-                      Explore Destinations <FiArrowRight />
-                    </Link>
-                    <a
-                      href="https://wa.me/919746161519"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn-secondary px-8 py-3.5 text-base"
-                    >
-                      <FaWhatsapp className="text-lg" /> Plan via WhatsApp
-                    </a>
-                  </motion.div>
-                </div>
-              </div>
             </SwiperSlide>
           ))}
         </Swiper>
+
+        {/* Single text overlay — outside Swiper to prevent all-slides rendering simultaneously */}
+        <div className="absolute inset-0 flex items-center justify-center px-4 z-10 pointer-events-none">
+          <div className="text-center max-w-4xl">
+            <motion.span
+              key={`tag-${activeSlide}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-block px-4 py-1.5 glass rounded-full text-green-400 text-sm font-semibold mb-6 tracking-wide"
+            >
+              📍 {heroSlides[activeSlide].tag}
+            </motion.span>
+            <motion.h1
+              key={`title-${activeSlide}`}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="font-display text-5xl md:text-7xl font-bold text-white mb-4 leading-tight"
+            >
+              {heroSlides[activeSlide].title}
+            </motion.h1>
+            <motion.p
+              key={`sub-${activeSlide}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-xl text-slate-300 mb-10"
+            >
+              {heroSlides[activeSlide].subtitle}
+            </motion.p>
+            <motion.div
+              key={`btns-${activeSlide}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center pointer-events-auto"
+            >
+              <Link href="/destinations" className="btn-primary px-8 py-3.5 text-base">
+                Explore Destinations <FiArrowRight />
+              </Link>
+              <a
+                href="https://wa.me/919746161519"
+                target="_blank"
+                rel="noreferrer"
+                className="btn-secondary px-8 py-3.5 text-base"
+              >
+                <FaWhatsapp className="text-lg" /> Plan via WhatsApp
+              </a>
+            </motion.div>
+          </div>
+        </div>
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
