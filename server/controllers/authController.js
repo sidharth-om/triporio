@@ -1,12 +1,10 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const OtpRecord = require('../models/OtpRecord');
 const { sendOtpEmail } = require('../utils/emailService');
 
 const generateToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE || '30d' });
-
-// In-memory OTP store: { email -> { otp, expiresAt, userData } }
-const otpStore = new Map();
 
 // Helper: generate 6-digit OTP
 const generateOtp = () => String(Math.floor(100000 + Math.random() * 900000));
@@ -28,10 +26,14 @@ exports.sendOtp = async (req, res) => {
     }
 
     const otp = generateOtp();
-    const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-    // Store OTP + user data temporarily
-    otpStore.set(email, { otp, expiresAt, userData: { name, email, phone, password } });
+    // Upsert: replace any existing OTP record for this email
+    await OtpRecord.findOneAndUpdate(
+      { email },
+      { otp, expiresAt, userData: { name, email, phone, password } },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
 
     // Send email
     await sendOtpEmail(email, otp, name);
@@ -53,14 +55,14 @@ exports.verifyOtp = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Email and OTP are required' });
     }
 
-    const record = otpStore.get(email);
+    const record = await OtpRecord.findOne({ email });
 
     if (!record) {
       return res.status(400).json({ success: false, message: 'No OTP found for this email. Please register again.' });
     }
 
-    if (Date.now() > record.expiresAt) {
-      otpStore.delete(email);
+    if (Date.now() > record.expiresAt.getTime()) {
+      await OtpRecord.deleteOne({ email });
       return res.status(400).json({ success: false, message: 'OTP has expired. Please register again.' });
     }
 
@@ -74,12 +76,12 @@ exports.verifyOtp = async (req, res) => {
     // Double-check email not registered in the meantime
     const userExists = await User.findOne({ email });
     if (userExists) {
-      otpStore.delete(email);
+      await OtpRecord.deleteOne({ email });
       return res.status(400).json({ success: false, message: 'Email already registered' });
     }
 
     const user = await User.create({ name, email, phone, password });
-    otpStore.delete(email);
+    await OtpRecord.deleteOne({ email });
 
     const token = generateToken(user._id);
     res.status(201).json({
