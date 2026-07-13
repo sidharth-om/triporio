@@ -1,8 +1,15 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Fix local DNS resolution issues for MongoDB SRV records on some environments (e.g. Windows/WSL/local ISP resolvers)
+// Force IPv4 DNS resolution first (Render free tier blocks outbound IPv6)
 const dns = require('dns');
+try {
+  dns.setDefaultResultOrder('ipv4first');
+} catch (e) {
+  console.warn('⚠️ Failed to set DNS result order:', e.message);
+}
+
+// Fix local DNS resolution issues for MongoDB SRV records on some environments (e.g. Windows/WSL/local ISP resolvers)
 if (process.env.NODE_ENV === 'development') {
   const servers = dns.getServers();
   if (servers.length === 0 || servers.some(s => s.startsWith('127.') || s === '::1')) {
