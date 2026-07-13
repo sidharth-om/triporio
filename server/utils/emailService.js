@@ -5,6 +5,7 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,       // use STARTTLS (not SSL on 465)
   requireTLS: true,
+  family: 4,           // force IPv4 — Render free tier blocks IPv6 outbound
   auth: {
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_APP_PASSWORD,
