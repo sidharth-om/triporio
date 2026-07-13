@@ -1,3 +1,6 @@
+// Force IPv4 DNS — Render free tier blocks outbound IPv6
+require('dns').setDefaultResultOrder('ipv4first');
+
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
