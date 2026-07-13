@@ -1,13 +1,25 @@
-// Force IPv4 DNS — Render free tier blocks outbound IPv6
-require('dns').setDefaultResultOrder('ipv4first');
+const dotenv = require('dotenv');
+dotenv.config();
+
+// Fix local DNS resolution issues for MongoDB SRV records on some environments (e.g. Windows/WSL/local ISP resolvers)
+const dns = require('dns');
+if (process.env.NODE_ENV === 'development') {
+  const servers = dns.getServers();
+  if (servers.length === 0 || servers.some(s => s.startsWith('127.') || s === '::1')) {
+    try {
+      dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
+      console.log('ℹ️ Local DNS resolver detected. Node.js DNS servers set to public DNS (8.8.8.8, 8.8.4.4, 1.1.1.1).');
+    } catch (e) {
+      console.warn('⚠️ Failed to configure public DNS servers:', e.message);
+    }
+  }
+}
 
 const express = require('express');
-const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
 const connectDB = require('./config/db');
 
-dotenv.config();
 connectDB();
 
 const app = express();
