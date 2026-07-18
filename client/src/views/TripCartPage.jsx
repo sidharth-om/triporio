@@ -132,7 +132,7 @@ export default function TripCartPage() {
                         src={dest.image} 
                         alt={dest.name} 
                         className="w-24 h-24 rounded-xl object-cover"
-                        onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1580392917481-ce0bd75c5c08?w=400'; }}
+                        onError={(e) => { e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Blue%2C_Green_%26_White.jpg'; }}
                       />
                       <div className="flex-1 min-w-0">
                         <h3 className="text-lg font-bold text-white truncate">{dest.name}</h3>

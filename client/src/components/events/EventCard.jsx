@@ -22,7 +22,7 @@ export default function EventCard({ event }) {
     }
   };
 
-  const imageUrl = event.image || 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=800';
+  const imageUrl = event.image || 'https://upload.wikimedia.org/wikipedia/commons/3/38/Kathivanoor_Veeran_Chemmarathi_Thara-Eripuram.jpg';
 
   return (
     <motion.div
@@ -39,7 +39,7 @@ export default function EventCard({ event }) {
             src={imageUrl}
             alt={event.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=800'; }}
+            onError={(e) => { e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/d/d1/Bakel_Fort_Beach_Kasaragod7.jpg'; }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 

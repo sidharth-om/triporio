@@ -145,7 +145,7 @@ export default function RegisterPage() {
       {/* Left visual */}
       <div className="hidden lg:flex flex-1 relative overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1551969014-7d2c4cddf0b6?w=1200"
+          src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Bakel_Fort_Beach_Kasaragod7.jpg"
           alt="Kerala Wildlife"
           className="w-full h-full object-cover"
         />

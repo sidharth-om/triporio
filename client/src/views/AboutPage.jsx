@@ -66,7 +66,7 @@ export default function AboutPage() {
             className="rounded-3xl overflow-hidden h-80"
           >
             <img 
-              src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1000" 
+              src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Blue%2C_Green_%26_White.jpg" 
               alt="Kerala Backwaters" 
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
             />
@@ -78,7 +78,7 @@ export default function AboutPage() {
             className="rounded-3xl overflow-hidden h-80"
           >
             <img 
-              src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=1000" 
+              src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Muzhappilangad_Drive-in_Beach_2.jpg" 
               alt="Theyyam performance" 
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
             />

@@ -15,25 +15,25 @@ import { CardSkeleton } from '../components/common/LoadingSpinner';
 
 const heroSlides = [
   {
-    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1400',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Blue%2C_Green_%26_White.jpg',
     title: 'Discover Kerala with Triporio',
     subtitle: 'Where mountains meet the sea',
     tag: 'Wayanad Hills',
   },
   {
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1400',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Muzhappilangad_Drive-in_Beach_2.jpg',
     title: 'Pristine Golden Beaches',
     subtitle: "Experience Asia's longest drive-in beach",
     tag: 'Muzhappilangad Beach',
   },
   {
-    image: 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=1400',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Kathivanoor_Veeran_Chemmarathi_Thara-Eripuram.jpg',
     title: 'Ancient Cultural Heritage',
     subtitle: 'Witness the magical Theyyam rituals',
     tag: 'Kannur Culture',
   },
   {
-    image: 'https://images.unsplash.com/photo-1599940824399-b87987ceb72a?w=1400',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/d/d1/Bakel_Fort_Beach_Kasaragod7.jpg',
     title: 'Historic Coastal Forts',
     subtitle: "Kerala's largest fort by the Arabian Sea",
     tag: 'Bekal Fort',
@@ -310,10 +310,10 @@ export default function HomePage() {
               >
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src={event.image || 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=800'}
+                    src={event.image || 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Blue%2C_Green_%26_White.jpg'}
                     alt={event.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=800'; }}
+                    onError={(e) => { e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Muzhappilangad_Drive-in_Beach_2.jpg'; }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <div className="absolute bottom-3 left-3">

@@ -25,7 +25,7 @@ export default function LoginPage() {
       {/* Left visual panel */}
       <div className="hidden lg:flex flex-1 relative overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1200"
+          src="https://upload.wikimedia.org/wikipedia/commons/3/38/Kathivanoor_Veeran_Chemmarathi_Thara-Eripuram.jpg"
           alt="Triporio - Kerala Travel"
           className="w-full h-full object-cover"
         />

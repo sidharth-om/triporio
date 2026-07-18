@@ -52,7 +52,7 @@ export default function DestinationCard({ destination, userWishlist = [], onWish
     ? destination.image
     : destination.image
     ? `${destination.image}`
-    : 'https://images.unsplash.com/photo-1580392917481-ce0bd75c5c08?w=800';
+    : 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Blue%2C_Green_%26_White.jpg';
 
   return (
     <motion.div
@@ -69,7 +69,7 @@ export default function DestinationCard({ destination, userWishlist = [], onWish
             src={imageUrl}
             alt={destination.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1580392917481-ce0bd75c5c08?w=800'; }}
+            onError={(e) => { e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Muzhappilangad_Drive-in_Beach_2.jpg'; }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 

@@ -87,7 +87,7 @@ export default function DestinationDetailsPage() {
           src={destination.image}
           alt={destination.name}
           className="w-full h-full object-cover"
-          onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1580392917481-ce0bd75c5c08?w=1400'; }}
+          onError={(e) => { e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/3/38/Kathivanoor_Veeran_Chemmarathi_Thara-Eripuram.jpg'; }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] via-[#0a0f1e]/60 to-transparent" />
         
