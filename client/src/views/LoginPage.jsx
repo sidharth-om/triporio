@@ -25,7 +25,7 @@ export default function LoginPage() {
       {/* Left visual panel */}
       <div className="hidden lg:flex flex-1 relative overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1580392917481-ce0bd75c5c08?w=1200"
+          src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1200"
           alt="Triporio - Kerala Travel"
           className="w-full h-full object-cover"
         />
@@ -43,7 +43,7 @@ export default function LoginPage() {
       </div>
 
       {/* Right form panel */}
-      <div className="flex-1 lg:max-w-md flex items-center justify-center px-6 py-16">
+      <div className="flex-1 lg:max-w-md flex items-center justify-center px-6 py-12">
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
@@ -68,7 +68,7 @@ export default function LoginPage() {
                   {...register('email', { required: 'Email is required', pattern: { value: /\S+@\S+\.\S+/, message: 'Invalid email' } })}
                   type="email"
                   placeholder="you@example.com"
-                  className="input-dark pl-10"
+                  className="input-dark !pl-10"
                   id="login-email"
                 />
               </div>
@@ -83,7 +83,7 @@ export default function LoginPage() {
                   {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Min 6 characters' } })}
                   type={showPass ? 'text' : 'password'}
                   placeholder="Enter your password"
-                  className="input-dark pl-10 pr-10"
+                  className="input-dark !pl-10 !pr-10"
                   id="login-password"
                 />
                 <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white">

@@ -196,7 +196,7 @@ export default function RegisterPage() {
                       <input
                         {...register('name', { required: 'Name is required', minLength: { value: 2, message: 'Min 2 characters' } })}
                         placeholder="Your full name"
-                        className="input-dark pl-10"
+                        className="input-dark !pl-10"
                         id="reg-name"
                       />
                     </div>
@@ -211,7 +211,7 @@ export default function RegisterPage() {
                         {...register('email', { required: 'Email is required', pattern: { value: /\S+@\S+\.\S+/, message: 'Invalid email' } })}
                         type="email"
                         placeholder="you@example.com"
-                        className="input-dark pl-10"
+                        className="input-dark !pl-10"
                         id="reg-email"
                       />
                     </div>
@@ -226,7 +226,7 @@ export default function RegisterPage() {
                         {...register('phone', { required: 'Phone is required', minLength: { value: 10, message: 'Enter valid phone' } })}
                         type="tel"
                         placeholder="+91 9876543210"
-                        className="input-dark pl-10"
+                        className="input-dark !pl-10"
                         id="reg-phone"
                       />
                     </div>
@@ -241,7 +241,7 @@ export default function RegisterPage() {
                         {...register('password', { required: 'Password required', minLength: { value: 6, message: 'Min 6 characters' } })}
                         type={showPass ? 'text' : 'password'}
                         placeholder="Create a password"
-                        className="input-dark pl-10 pr-10"
+                        className="input-dark !pl-10 !pr-10"
                         id="reg-password"
                       />
                       <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white">

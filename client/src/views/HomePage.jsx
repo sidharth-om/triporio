@@ -15,7 +15,7 @@ import { CardSkeleton } from '../components/common/LoadingSpinner';
 
 const heroSlides = [
   {
-    image: 'https://images.unsplash.com/photo-1580392917481-ce0bd75c5c08?w=1400',
+    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1400',
     title: 'Discover Kerala with Triporio',
     subtitle: 'Where mountains meet the sea',
     tag: 'Wayanad Hills',
