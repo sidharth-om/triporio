@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const OtpRecord = require('../models/OtpRecord');
-const { sendOtpEmail } = require('../utils/emailService');
+const { sendOtpEmail, sendPasswordResetEmail } = require('../utils/emailService');
 
 const generateToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE || '30d' });
@@ -161,6 +161,75 @@ exports.updateProfile = async (req, res) => {
     );
     res.json({ success: true, user });
   } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc  Send OTP for password reset
+// @route POST /api/auth/forgot-password
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Please provide an email' });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'No account found with that email' });
+    }
+
+    const otp = generateOtp();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
+
+    await OtpRecord.findOneAndUpdate(
+      { email },
+      { otp, expiresAt },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    await sendPasswordResetEmail(email, otp, user.name);
+
+    res.json({ success: true, message: 'Password reset OTP sent to email' });
+  } catch (error) {
+    console.error('forgotPassword error:', error.message);
+    res.status(500).json({ success: false, message: 'Failed to send reset email' });
+  }
+};
+
+// @desc  Verify OTP and reset password
+// @route POST /api/auth/reset-password
+exports.resetPassword = async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Email, OTP, and new password are required' });
+    }
+
+    const record = await OtpRecord.findOne({ email });
+    if (!record || record.otp !== otp) {
+      return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
+    }
+
+    if (new Date() > record.expiresAt) {
+      await OtpRecord.deleteOne({ email });
+      return res.status(400).json({ success: false, message: 'OTP has expired' });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    await OtpRecord.deleteOne({ email });
+
+    res.json({ success: true, message: 'Password reset successful' });
+  } catch (error) {
+    console.error('resetPassword error:', error.message);
     res.status(500).json({ success: false, message: error.message });
   }
 };
